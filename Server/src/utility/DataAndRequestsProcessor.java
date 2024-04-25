@@ -25,7 +25,6 @@ public class DataAndRequestsProcessor implements Runnable {
     @Override
     public void run() {
         try {
-            LOGGER.log(Level.INFO, "Server started, waiting for connections...");
             while (true) {
                 LOGGER.log(Level.INFO, String.format("Connection established with client %s\n", clientSocket.getInetAddress().getHostName()));
                 while (clientSocket.isConnected()) {

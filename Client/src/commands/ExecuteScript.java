@@ -1,5 +1,6 @@
 package commands;
 
+import exceptions.ServerUnavailableException;
 import utility.ClientHandler;
 import utility.ClientRequester;
 
@@ -74,7 +75,7 @@ public class ExecuteScript extends ClientCommand implements Serializable {
                     channel.write(buffer);
                 }
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | ServerUnavailableException e) {
             throw new RuntimeException(e);
         }
         return null;

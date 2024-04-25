@@ -1,7 +1,5 @@
 package utility;
 
-import models.StudyGroup;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,7 @@ public class ServerInvoker implements Serializable {
             return "Client does not have access rights to use the save collection command";
         }
         else if (!ServerCommandManager.serverCommands.containsKey(entryCommand)) {
-            return "Command doesn't exist - " + entryCommand + " - OK";
+            return "Command doesn't exist - " + entryCommand + " - OK\n";
         }
         else if (ServerCommandManager.serverCommandsContainsValue.contains(entryCommand)) {
             String entryValue = (String) serverHandler.requestHanding(request).get(1);

@@ -6,7 +6,7 @@ import utility.ClientCollectionManager;
 
 import java.io.Serializable;
 
-public class InsertObject extends ClientCommand {
+public class InsertObject extends ClientCommand implements Serializable{
     @Override
     public Object executionForRequestReturn(Object object){
         ClientCollectionManager collectionManager = new ClientCollectionManager();

@@ -74,7 +74,6 @@ public class Server {
             ServerSocket serverSocket = new ServerSocket(45010);
 
             while (true) {
-                LOGGER.log(Level.INFO, "Catching new connections to the server\n");
                 Socket clientSocket = serverSocket.accept();
                 LOGGER.log(Level.INFO, String.format("New client connected - %s\n", clientSocket));
 

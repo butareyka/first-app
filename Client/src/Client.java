@@ -1,6 +1,7 @@
 import commands.ExecuteScript;
 import commands.Exit;
 import commands.InsertObject;
+import exceptions.ServerUnavailableException;
 import utility.ClientCommandManager;
 import utility.ClientHandler;
 import utility.ClientRequester;
@@ -19,12 +20,10 @@ public class Client {
     private static final String SERVER_ADDRESS = "localhost";
     private static final int SERVER_PORT = 45010;
     private static final int CONNECTION_TIMEOUT = 5000;
+    static ClientRequester clientRequester = new ClientRequester();
+    static ClientHandler clientHandler = new ClientHandler();
 
-    public static void main(String[] args) {
-
-        ClientRequester clientRequester = new ClientRequester();
-        ClientHandler clientHandler = new ClientHandler();
-
+    public static void main(String[] args) throws ServerUnavailableException {
         new ClientCommandManager() {{
             register("insertObject", new InsertObject());
             register("exit", new Exit());
@@ -42,48 +41,37 @@ public class Client {
             registerClientCommandsContainsValueAndObject("update");
         }};
 
-        try {
-            SocketChannel socketChannel = SocketChannel.open();
+        try (SocketChannel socketChannel = SocketChannel.open()){
             socketChannel.configureBlocking(false);
             socketChannel.connect(new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT));
-
-            Selector selector = Selector.open();
-            socketChannel.register(selector, SelectionKey.OP_CONNECT);
-            selector.select(CONNECTION_TIMEOUT);
-            Set<SelectionKey> selectedKeys = selector.selectedKeys();
-            if (selectedKeys.isEmpty()) {
-                System.out.println("Connection timeout");
-                return;
-            } else {
-                System.out.println("Client successfully connected!");
-                socketChannel.finishConnect();
-            }
-            selector.close();
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
             clientInvoker.setBuffer(byteBuffer);
             clientInvoker.setSocketChannel(socketChannel);
+            checkFirstConnection();
             while (true) {
                 if (tcpPing(SERVER_ADDRESS, SERVER_PORT, CONNECTION_TIMEOUT)){
                     System.out.println("What do you wanna do with massage:\n1 - send\n2 - receive");
                     Scanner scanner = new Scanner(System.in);
                     String actionWithMassage = scanner.nextLine();
-                    if (actionWithMassage.equals("1") || actionWithMassage.equals("send")) {
-                        System.out.println("What command do you wanna send the server?");
-                        String request = clientRequester.makeRequest();
-                        clientRequester.sendRequest(request);
-                    }
-                    if (actionWithMassage.equals("2") || actionWithMassage.equals("receive")) {
-                        clientHandler.receiveResponse();
+                    try{
+                        if (actionWithMassage.equals("1") || actionWithMassage.equals("send") && socketChannel.isConnected()) {
+                            System.out.println("What command do you wanna send the server?");
+                            String request = clientRequester.makeRequest();
+                            clientRequester.sendRequest(request);
+                        }
+                        if (actionWithMassage.equals("2") || actionWithMassage.equals("receive")) {
+                            clientHandler.receiveResponse();
+                        }
+                    } catch (Exception e){
+                        throw new ServerUnavailableException();
                     }
                 } else {
-                    System.err.println("Server is temporarily unavailable, try connection again!");
-                    break;
+                    throw new ServerUnavailableException();
                 }
-
             }
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | ServerUnavailableException e) {
+            System.out.println("IOException - " + e.getMessage());
         }
     }
 
@@ -93,8 +81,8 @@ public class Client {
             socketChannel.socket().setSoTimeout(timeout);
             socketChannel.connect(new InetSocketAddress(host, port));
 
-            ByteBuffer buffer = ByteBuffer.allocate(1);
-            buffer.put((byte) 0);
+            ByteBuffer buffer = ByteBuffer.allocate(5);
+            buffer.put("OKAY?".getBytes());
             buffer.flip();
             socketChannel.write(buffer);
             buffer.clear();
@@ -105,6 +93,24 @@ public class Client {
             return bytesRead > 0;
         } catch (IOException e) {
             return false;
+        }
+    }
+    public static void checkFirstConnection(){
+        try {
+            Selector selector = Selector.open();
+            clientInvoker.getSocketChannel().register(selector, SelectionKey.OP_CONNECT);
+            selector.select(CONNECTION_TIMEOUT);
+            Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            if (selectedKeys.isEmpty()) {
+                System.out.println("Connection timeout");
+                return;
+            } else {
+                System.out.println("Client successfully connected!");
+                clientInvoker.getSocketChannel().finishConnect();
+            }
+            selector.close();
+        } catch (IOException e) {
+            System.out.println("IOException " + e.getMessage());
         }
     }
 }
