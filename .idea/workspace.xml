@@ -2,14 +2,70 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="Server:jar" />
+      <artifact name="Client:jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45bcfaea-5eaa-4831-bb28-8378bc24d91d" name="Changes" comment="" />
+    <list default="true" id="45bcfaea-5eaa-4831-bb28-8378bc24d91d" name="Changes" comment="full 6th lab commit">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/Client_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/Client1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Client/Client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/File1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client/File1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/File2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client/File2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/File3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Client/File3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/commands/ClientCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/commands/ClientCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/commands/ExecuteScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/commands/ExecuteScript.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/commands/Exit.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/commands/Exit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/commands/InsertObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/commands/InsertObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/Country.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/Country.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/EyesColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/EyesColor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/FormOfEducation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/FormOfEducation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/HairColor.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/HairColor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/models/StudyGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/models/StudyGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ClientCollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ClientCollectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ClientCommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ClientCommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ClientInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ClientInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ClientRequester.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/Validator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/Validator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client1/src/utility/ValidatorMethods.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ValidatorMethods.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/Client2.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/File1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/File2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/File3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/commands/ClientCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/commands/ExecuteScript.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/commands/Exit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/commands/InsertObject.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/Coordinates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/Country.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/EyesColor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/FormOfEducation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/HairColor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/Location.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/models/StudyGroup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ClientCollectionManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ClientCommandManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ClientHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ClientInvoker.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ClientRequester.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/utility/ClientRequester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/Validator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client2/src/utility/ValidatorMethods.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgLab6.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ProgLab6.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/Server.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,31 +89,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Client1.executor": "Run",
-    "Application.Client2.executor": "Run",
-    "Application.Server.executor": "Run",
-    "Docker.Server-app.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "jdk.selected.JAVA_MODULE": "17",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/macbook/Programming/ProgLab6",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/macbook/Programming/ProgLab6/Client2/src/Main.java",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client1.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Client2.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.Server-app.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;lab6&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/macbook/Programming/ProgLab6&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/macbook/Programming/ProgLab6/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -65,27 +123,15 @@
       <recent name="$PROJECT_DIR$/Server" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client2">
-    <configuration name="Client1" type="Application" factoryName="Application">
+  <component name="RunManager" selected="Application.Client">
+    <configuration name="Client" type="Application" factoryName="Application">
       <envs>
         <env name="FILE1" value="$PROJECT_DIR$/Client1/File1.txt" />
         <env name="FILE2" value="$PROJECT_DIR$/Client1/File2.txt" />
         <env name="FILE3" value="$PROJECT_DIR$/Client1/File3.txt" />
       </envs>
       <option name="MAIN_CLASS_NAME" value="Client" />
-      <module name="Client1" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Client2" type="Application" factoryName="Application">
-      <envs>
-        <env name="FILE1" value="$PROJECT_DIR$/Client2/File1.txt" />
-        <env name="FILE2" value="$PROJECT_DIR$/Client2/File2.txt" />
-        <env name="FILE3" value="$PROJECT_DIR$/Client2/File3.txt" />
-      </envs>
-      <option name="MAIN_CLASS_NAME" value="Client" />
-      <module name="Client2" />
+      <module name="Client" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,7 +146,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Server-app" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Server" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Server-app" type="docker-deploy" factoryName="dockerfile">
       <deployment type="dockerfile">
         <settings>
           <option name="containerName" value="" />
@@ -110,8 +169,7 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Client1" />
-      <item itemvalue="Application.Client2" />
+      <item itemvalue="Application.Client" />
       <item itemvalue="Application.Server" />
       <item itemvalue="Docker.Server-app" />
     </list>
@@ -139,8 +197,24 @@
       <workItem from="1713355001934" duration="55000" />
       <workItem from="1713355119620" duration="45962000" />
       <workItem from="1713453796473" duration="300000" />
-      <workItem from="1713454106827" duration="1173000" />
+      <workItem from="1713454106827" duration="2144000" />
+      <workItem from="1713608907131" duration="12348000" />
+      <workItem from="1713628374425" duration="52000" />
+      <workItem from="1713628436528" duration="1000" />
+      <workItem from="1713628454264" duration="361000" />
+      <workItem from="1713628823507" duration="3113000" />
+      <workItem from="1713864977104" duration="3000" />
+      <workItem from="1713962286257" duration="7444000" />
     </task>
+    <task id="LOCAL-00001" summary="full 6th lab commit">
+      <option name="closed" value="true" />
+      <created>1713455808541</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713455808541</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,5 +224,18 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$/.." />
     </ignored-roots>
+    <MESSAGE value="full 6th lab commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="full 6th lab commit" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>11</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -71,7 +71,7 @@ public class Server {
 
         try{
             LOGGER.log(Level.INFO, "Create a server channel\n");
-            ServerSocket serverSocket = new ServerSocket(45000);
+            ServerSocket serverSocket = new ServerSocket(45010);
 
             while (true) {
                 LOGGER.log(Level.INFO, "Catching new connections to the server\n");
