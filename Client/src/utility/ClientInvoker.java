@@ -27,9 +27,13 @@ public class ClientInvoker {
 
     public Object invoke(String request){
         if (ClientCommandManager.clientCommandsContainsObject.contains(request)){
-            return ClientCommandManager.clientCommands.get("insertObject").executionForRequestReturn(request);
+            if (request.equals("register") || request.equals("log_in")){
+                return ClientCommandManager.clientCommands.get(request).executionForRequestReturn(request);
+            } else {
+                return ClientCommandManager.clientCommands.get(request.split(" ")[0]).executionForRequestReturn(request);
+            }
         } else if (ClientCommandManager.clientCommandsContainsValueAndObject.contains(request.split(" ")[0])) {
-            return ClientCommandManager.clientCommands.get("insertObject").executionForRequestReturn(request);
+            return ClientCommandManager.clientCommands.get(request.split(" ")[0]).executionForRequestReturn(request);
         } else if (request.contains("execute_script")) {
             return ClientCommandManager.clientCommands.get("execute_script").executionForRequestReturn(request);
         } else{

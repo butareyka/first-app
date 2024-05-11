@@ -37,7 +37,7 @@ public class ServerResponser implements Runnable{
     public void run() {
         ServerInvoker serverInvoker = new ServerInvoker();
         try {
-//            locker.lock();
+            locker.lock();
             if (entryCommand.equals("OKAY?")) {
                 clientSocket.getOutputStream().write("ALL OKAY ILON MASK".getBytes());
                 clientSocket.getOutputStream().flush();
@@ -68,7 +68,7 @@ public class ServerResponser implements Runnable{
         } catch (IOException e){
             throw new RuntimeException();
         } finally {
-//            locker.unlock();
+            locker.unlock();
         }
     }
 }

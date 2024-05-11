@@ -38,8 +38,10 @@ public class ServerHandler implements Runnable {
             while (clientSocket.isConnected()){
                 byte[] data = new byte[4096];
                 int bytesRead = clientSocket.getInputStream().read(data);
+                System.out.println(bytesRead);
                 if (bytesRead == -1){
                     LOGGER.log(Level.INFO, String.format("Get the end off buffer of port - %s\n", clientSocket.getPort()));
+                    clientSocket.close();
                 } else {
                     ByteBuffer buffer = ByteBuffer.wrap(data, 0, bytesRead);
                     buffer.rewind();

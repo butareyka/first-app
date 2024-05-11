@@ -1,6 +1,7 @@
 
 package utility;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ public class ServerInvoker implements Serializable {
     public static List<String> list = new ArrayList<>();
     ServerHandler serverHandler = new ServerHandler();
 
-    public String invoke(String request, Object object) {
+    public String invoke(String request, Object object) throws IOException {
         String entryCommand = (String) serverHandler.requestHanding(request).get(0);
 
         if (entryCommand.equalsIgnoreCase("quit")) {

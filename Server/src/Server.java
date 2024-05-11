@@ -4,6 +4,7 @@ import utility.ServerCollectionManager;
 import utility.ServerHandler;
 import utility.ServerCommandManager;
 
+import javax.crypto.spec.PSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,6 +18,8 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static models.FormOfEducation.EVENING_CLASSES;
 
 public class Server {
     static ForkJoinPool fjp = new ForkJoinPool();
@@ -44,6 +47,8 @@ public class Server {
             registerServerCommands("max_by_coordinates", new MaxByCoordinates());
             registerServerCommands("filter_contains_name", new FilterContainsName());
             registerServerCommands("print_field_descending_expelled_students", new PrintFieldDescendingExpelledStudents());
+            registerServerCommands("log_in", new Authorization());
+            registerServerCommands("register", new Register());
         }};
 
         LOGGER.log(Level.INFO, "We create command objects that require an object for input\n");
@@ -51,7 +56,7 @@ public class Server {
             registerServerCommandsContainsObject("insert");
             registerServerCommandsContainsObject("remove_greater");
             registerServerCommandsContainsObject("remove_lower");
-            registerServerCommandsContainsObject("authorization");
+            registerServerCommandsContainsObject("log_in");
             registerServerCommandsContainsObject("register");
         }};
 
@@ -71,7 +76,7 @@ public class Server {
 
         LOGGER.log(Level.INFO, "We create objects of commands auth and reg\n");
         new ServerCommandManager() {{
-            registerAuthAndReg("authorization");
+            registerAuthAndReg("log_in");
             registerAuthAndReg("register");
         }};
 
@@ -89,12 +94,10 @@ public class Server {
         try{
             LOGGER.log(Level.INFO, "Create a server channel\n");
             Scanner scanner = new Scanner(System.in);
-            LOGGER.log(Level.INFO, "Enter accepting port:\n");
+            LOGGER.log(Level.INFO, "Enter accepting port:");
             ACCEPTING_PORT = scanner.nextInt();
             ServerSocket serverSocket = new ServerSocket(ACCEPTING_PORT);
             ReentrantLock locker = new ReentrantLock();
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            ServerCollectionManager.group = dataBaseManager.readFromDataBase();
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();

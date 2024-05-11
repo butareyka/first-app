@@ -1,6 +1,4 @@
-import commands.ExecuteScript;
-import commands.Exit;
-import commands.InsertObject;
+import commands.*;
 import exceptions.ServerUnavailableException;
 import utility.ClientCommandManager;
 import utility.ClientHandler;
@@ -28,13 +26,16 @@ public class Client {
             register("insertObject", new InsertObject());
             register("exit", new Exit());
             register("execute_script", new ExecuteScript());
+            register("log_in", new ClientAuthorization());
+            register("register", new ClientRegister());
         }};
 
         new ClientCommandManager() {{
             registerClientCommandsContainsObject("insert");
             registerClientCommandsContainsObject("remove_greater");
             registerClientCommandsContainsObject("remove_lower");
-
+            registerClientCommandsContainsObject("log_in");
+            registerClientCommandsContainsObject("register");
         }};
 
         new ClientCommandManager() {{
@@ -60,17 +61,7 @@ public class Client {
             clientInvoker.setSocketChannel(socketChannel);
 
             if (checkFirstConnection()){
-                System.out.println("If you wanna authorization print - authorization");
-                System.out.println("If you wanna register a new user print - register");
-                String startWith = scanner.next();
-                while (true){
-                    if (startWith.equals("authorization") && authorization(startWith)){
-                        break;
-                    }
-                    if (startWith.equals("register")){
-                        register(startWith);
-                    }
-                }
+                System.out.println("Connection to the server is established");
             } else {
                 System.out.println("Connection to the server is not established");
                 connecting();
@@ -120,44 +111,64 @@ public class Client {
     }
 
     public static boolean checkFirstConnection(){
+        try {
+            Selector selector = Selector.open();
+            clientInvoker.getSocketChannel().register(selector, SelectionKey.OP_CONNECT);
+            selector.select(CONNECTION_TIMEOUT);
+            Set<SelectionKey> selectedKeys = selector.selectedKeys();
+            if (selectedKeys.isEmpty()) {
+                System.out.println("Connection timeout");
+            } else {
+                clientInvoker.getSocketChannel().finishConnect();
+            }
+            selector.close();
+        } catch (IOException e) {
+            System.out.println("IOException " + e.getMessage());
+        }
         return ping(SERVER_ADDRESS, SERVER_PORT, CONNECTION_TIMEOUT);
     }
 
-    public static boolean authorization(String startWith){
-        Scanner scanner = new Scanner(System.in);
-        try {
-            System.out.println("Enter username:");
-            String userName = scanner.next();
-            System.out.println("Enter password:");
-            String password = new jline.ConsoleReader().readLine(new Character('*'));
+//    public static boolean authorization(){
+//        Scanner scanner = new Scanner(System.in);
+//        try {
+//            System.out.println("Enter username:");
+//            String userName = scanner.next();
+//
+//            Terminal terminal = TerminalBuilder.builder().system(true).build();
+//            LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
+//            String password = reader.readLine("Enter password:", '*');
+//            String passwordAgain = reader.readLine("Enter password again:", '*');
+//            if (passwordAgain.equals(password)){
+//                clientRequester.sendRequest("authorization");
+//            } else {
+//                authorization();
+//            }
+//
+//            if (clientHandler.receiveResponse().equals("Don't exist")){
+//                System.out.printf("User with name %s doesn't exist or you made mistake in name or password. Try again!", userName);
+//                return false;
+//            } else {
+//                System.out.printf("You successfully logged in as %s%n", userName);
+//                return true;
+//            }
+//
+//        } catch (IOException | ClassNotFoundException | ServerUnavailableException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-
-            if (clientHandler.receiveResponse().equals("Don't exist")){
-                System.out.printf("User with name %s doesn't exist or you made mistake in name or password. Try again!", entry);
-                return false;
-            } else {
-                System.out.printf("You successfully logged in as %s%n", entry);
-                return true;
-            }
-
-        } catch (IOException | ClassNotFoundException | ServerUnavailableException e) {
-            throw new RuntimeException(e);
-        }
-        return false;
-    }
-
-    public static void register(String startWith) {
-        try {
-            if (clientHandler.receiveResponse().equals("Enter new user's name: ")){
-                String newName = clientRequester.makeRequest();
-                clientRequester.sendRequest(newName);
-            } else if (clientHandler.receiveResponse().equals("New user was successfully register!")){
-                System.out.println("New user was successfully register!");
-            } else {
-                register();
-            }
-        } catch (IOException | ServerUnavailableException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public static void register(String startWith) {
+//        try {
+//            if (clientHandler.receiveResponse().equals("Enter new user's name: ")){
+//                String newName = clientRequester.makeRequest();
+//                clientRequester.sendRequest(newName);
+//            } else if (clientHandler.receiveResponse().equals("New user was successfully register!")){
+//                System.out.println("New user was successfully register!");
+//            } else {
+////                register();
+//            }
+//        } catch (IOException | ServerUnavailableException | ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

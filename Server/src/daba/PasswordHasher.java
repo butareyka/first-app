@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordHasher {
-    public String hashingPassword(String password) {
+    public static String hashingPassword(String password) {
         try {
             // Получаем экземпляр MessageDigest с алгоритмом SHA-384
             MessageDigest digest = MessageDigest.getInstance("SHA-384");

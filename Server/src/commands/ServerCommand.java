@@ -1,5 +1,6 @@
 package commands;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 public abstract class ServerCommand implements Serializable {
@@ -22,7 +23,7 @@ public abstract class ServerCommand implements Serializable {
     }
     
 
-    public Object executionForResponse(Object object){
+    public Object executionForResponse(Object object) throws IOException {
         return null;
     }
 

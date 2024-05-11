@@ -107,12 +107,12 @@ public class StudyGroup implements Serializable {
     public String toString(){
         return  "\"group_id: " + group_id +
                 ", groupName: " + groupName  +
+                ", userName: " + userName +
                 ", creationDate: " + creationDate +
                 ", coordinates: " + coordinates +
                 ", studentsCount: " + studentsCount +
                 ", expelledStudents: " + expelledStudents +
                 ", transferredStudents: " + transferredStudents +
-                ", userName: " + userName +
                 ", formOfEducation: " + formOfEducation +
                 ", " + groupAdmin + "\"";
     }
