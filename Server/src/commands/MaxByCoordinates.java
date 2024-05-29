@@ -1,8 +1,10 @@
 package commands;
 
 import models.StudyGroup;
+import models.User;
 import utility.ServerCollectionManager;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -12,28 +14,32 @@ public class MaxByCoordinates extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object value) {
-        Long idElementWithMaxCoordinates = 0L;
-        double xMax = 0;
-        int yMax = 0;
-        double prevXMax;
-        for (Map.Entry<Long, StudyGroup> item: ServerCollectionManager.group.entrySet()){
-            if (item.getValue().getCoordinates().getX() > xMax){
-                prevXMax = xMax;
-                xMax = item.getValue().getCoordinates().getX();
+    public Object executionForResponse(Object value, User user) throws IOException {
+        if (Authorization.list.contains(user.getUserName())) {
+            new LoadCollection().executionForResponse(null, user);
+            Long idElementWithMaxCoordinates = 0L;
+            double xMax = 0;
+            int yMax = 0;
+            double prevXMax;
+            for (Map.Entry<Long, StudyGroup> item : ServerCollectionManager.group.entrySet()) {
+                if (item.getValue().getCoordinates().getX() > xMax) {
+                    prevXMax = xMax;
+                    xMax = item.getValue().getCoordinates().getX();
+                } else {
+                    continue;
+                }
+                if (item.getValue().getCoordinates().getY() > yMax) {
+                    yMax = item.getValue().getCoordinates().getY();
+                    idElementWithMaxCoordinates = item.getKey();
+                } else {
+                    xMax = prevXMax;
+                }
             }
-            else {
-                continue;
-            }
-            if (item.getValue().getCoordinates().getY() > yMax){
-                yMax = item.getValue().getCoordinates().getY();
-                idElementWithMaxCoordinates = item.getKey();
-            }
-            else {
-                xMax = prevXMax;
-            }
+            return "{" + idElementWithMaxCoordinates + "=" + ServerCollectionManager.group.get(idElementWithMaxCoordinates) + "}";
+        } else {
+            return "You need to reg or log_in";
         }
-        return "{" + idElementWithMaxCoordinates + "=" + ServerCollectionManager.group.get(idElementWithMaxCoordinates) + "}";
     }
+
 }
 

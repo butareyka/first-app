@@ -2,6 +2,7 @@ package commands;
 
 import daba.DataBaseManager;
 import models.StudyGroup;
+import models.User;
 import utility.ServerCollectionManager;
 import utility.SortManager;
 
@@ -17,24 +18,17 @@ public class Show extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object value) {
-        try {
-            DataBaseManager dataBaseManager = new DataBaseManager();
-            return dataBaseManager.readFromDataBase();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public Object executionForResponse(Object value, User user) {
+        if (Authorization.list.contains(user.getUserName())) {
+            try {
+                new LoadCollection().executionForResponse(null, user);
+                return new DataBaseManager().readFromDataBase();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            return "You need to reg or log_in";
         }
-//        Comparator<StudyGroup> groupComparator = new SortManager().sortLocation();
-//        File file = new File(System.getenv("MYFILE"));
-//        List<StudyGroup> sortedGroupList = ServerCollectionManager.group.values().stream()
-//                .sorted(groupComparator).toList();
-//
-//        if (file.length() == 0 && sortedGroupList.isEmpty()) {
-//            return "Collection is empty!";
-//        } else {
-//            return sortedGroupList.stream()
-//                    .collect(Collectors.toMap(StudyGroup::getGroupId, item -> item, (a, b) -> a, LinkedHashMap::new));
-//        }
     }
 }
 

@@ -1,13 +1,14 @@
 package commands;
 
+import daba.DataBaseManager;
+import models.Person;
 import models.StudyGroup;
-import utility.FileManager;
+import models.User;
 import utility.ServerCollectionManager;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
+
 
 public class Save extends ServerCommand implements Serializable {
     public Save(){
@@ -15,33 +16,23 @@ public class Save extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object str){
-        StringBuilder data = new StringBuilder();
-        FileManager fileManager = new FileManager();
-
-        try{
-            Set<Long> keys = ServerCollectionManager.group.keySet();
-            Iterator<Long> iterator = keys.iterator();
-            Long lastKey = 1L;
-            while (iterator.hasNext()) {
-                lastKey = iterator.next();
-            }
-
-            for (Map.Entry<Long, StudyGroup> item : ServerCollectionManager.group.entrySet()) {
-                Long key = item.getKey();
-                StudyGroup value = item.getValue();
-                if (!item.getKey().equals(lastKey)){
-                    data.append(key).append(",").append(value).append(',');
+    public Object executionForResponse(Object str, User user){
+        if (Authorization.list.contains(user.getUserName())) {
+            try {
+                DataBaseManager dataBaseManager = new DataBaseManager();
+                for (Map.Entry<Long, StudyGroup> item : ServerCollectionManager.group.entrySet()) {
+                    dataBaseManager.deleteAllCollectionTable(user.getUserName());
+                    dataBaseManager.insertIntoCoordinates(user.getUserName(), (float) item.getValue().getCoordinates().getX(), item.getValue().getCoordinates().getY());
+                    dataBaseManager.insertIntoLocation(user.getUserName(), item.getValue().getGroupAdmin().getLocation().getX(), item.getValue().getGroupAdmin().getLocation().getY(), item.getValue().getGroupAdmin().getLocation().getLocationName());
+                    dataBaseManager.insertIntoPerson(user.getUserName(), item.getValue().getGroupAdmin().getAdminName(), item.getValue().getGroupAdmin().getHeight(), item.getValue().getGroupAdmin().getEyeColor(), item.getValue().getGroupAdmin().getHairColor(), item.getValue().getGroupAdmin().getNationality());
+                    dataBaseManager.insertIntoStudyGroup(item.getValue().getGroupId(), user.getUserName(), item.getValue().getGroupName(), item.getValue().getCreationDate(), item.getValue().getStudentsCount(), item.getValue().getExpelledStudents(), item.getValue().getTransferredStudents(), item.getValue().getFormOfEducation(), item.getValue().getGroupAdmin().getAdminName());
                 }
-                else{
-                    data.append(key).append(",").append(value);
-                }
+                return "Data saved successfully";
+            } catch (Exception e) {
+                return "Error while passing data parseCollectionToCSV";
             }
-            fileManager.parseCollectionToCSV(data.toString());
-            System.out.println("Data saved successfully");
-        }catch (Exception e){
-            System.out.println("Error while passing data parseCollectionToCSV");
+        } else {
+            return "You need to reg or log_in";
         }
-        return null;
     }
 }

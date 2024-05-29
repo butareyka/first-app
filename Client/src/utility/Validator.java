@@ -97,7 +97,7 @@ public class Validator implements ValidatorMethods, Serializable {
                 }
                 break;
             case "locationCoordinatesY":
-                Double objectDouble2 = (Double) object;
+                Float objectDouble2 = (Float) object;
                 if (objectDouble2 == null) {
                     System.out.println("Поле locationCoordinatesY не может быть null!");
                     return true;

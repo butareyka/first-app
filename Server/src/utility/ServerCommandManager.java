@@ -12,7 +12,6 @@ public class ServerCommandManager implements ServerCommandMethods, Serializable 
     public static HashSet<String> serverCommandsContainsObject = new HashSet<>();
     public static HashSet<String> serverCommandsContainsValue = new HashSet<>();
     public static HashSet<String> serverCommandsContainsValueAndObject = new HashSet<>();
-    public static HashSet<String> authAndReg = new HashSet<>();
 
     public void registerServerCommands(String key, ServerCommand command){
         serverCommands.put(key, command);
@@ -25,9 +24,6 @@ public class ServerCommandManager implements ServerCommandMethods, Serializable 
     }
     public void registerServerCommandsContainsValueAndObject(String command){
         serverCommandsContainsValueAndObject.add(command);
-    }
-    public void registerAuthAndReg(String command){
-        authAndReg.add(command);
     }
 
 }

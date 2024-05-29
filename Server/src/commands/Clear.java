@@ -1,8 +1,9 @@
 package commands;
 
+import daba.DataBaseManager;
+import models.User;
 import utility.ServerCollectionManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
@@ -12,15 +13,15 @@ public class Clear extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object value) {
-        File file = new File(System.getenv("MYFILE"));
-        try{
-            file.delete();
-            file.createNewFile();
+    public Object executionForResponse(Object value, User user) throws IOException {
+        DataBaseManager dataBaseManager = new DataBaseManager();
+        if (Authorization.list.contains(user.getUserName())){
             ServerCollectionManager.group.clear();
+            new Save().executionForResponse(null, user);
+//            dataBaseManager.deleteAllCollectionTable(user.getUserName());
             return "The collection was successfully cleared";
-        } catch (IOException e){
-            return "Error when clearing file: " + e.getMessage();
+        } else {
+            return "You need to reg or log_in";
         }
     }
 }

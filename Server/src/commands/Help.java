@@ -1,5 +1,6 @@
 package commands;
 
+import models.User;
 import utility.ServerCommandManager;
 
 import java.io.Serializable;
@@ -10,7 +11,11 @@ public class Help extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object value){
-        return ServerCommandManager.serverCommands;
+    public Object executionForResponse(Object value, User user){
+        if (Authorization.list.contains(user.getUserName())){
+            return ServerCommandManager.serverCommands;
+        } else {
+            return "You need to reg or log_in";
+        }
     }
 }

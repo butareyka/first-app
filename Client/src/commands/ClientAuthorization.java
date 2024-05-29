@@ -5,13 +5,14 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
-import org.apache.commons.lang3.SerializationUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ClientAuthorization extends ClientCommand implements Serializable {
+    private int counter = 0;
     @Override
     public Object executionForRequestReturn(Object object){
         Scanner scanner = new Scanner(System.in);
@@ -25,22 +26,28 @@ public class ClientAuthorization extends ClientCommand implements Serializable {
             System.out.println("IOException in builder by jline" + e.getMessage());
         }
         LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
-        String password = reader.readLine("Enter password:", '*');
-        String passwordAgain = reader.readLine("Enter password again:", '*');
+        String password = reader.readLine("Enter password:\n", '*');
+        String passwordAgain = reader.readLine("Enter password again:\n", '*');
 
-        if (passwordAgain.equals(password)){
-            return SerializationUtils.serialize(new User(userName, password));
+        if (Objects.equals(passwordAgain, password)) {
+            User user = new User(userName, password);
+            System.out.println(user);
+            return user;
         } else {
-            executionForRequestReturn(null);
+            counter++;
+            if (counter < 3) {
+                System.out.println("Passwords do not match. Please try again.");
+                return executionForRequestReturn(null);
+            } else {
+                System.out.println("Do you want to register a new user? Yes or No");
+                String ans = scanner.next();
+                if (ans.equalsIgnoreCase("yes")) {
+                    return new ClientRegister().executionForRequestReturn(null);
+                } else {
+                    counter = 0;
+                    return executionForRequestReturn(null);
+                }
+            }
         }
-        return null;
     }
 }
-
-//            if (clientHandler.receiveResponse().equals("Don't exist")){
-//                System.out.printf("User with name %s doesn't exist or you made mistake in name or password. Try again!", userName);
-//                return false;
-//            } else {
-//                System.out.printf("You successfully logged in as %s%n", userName);
-//                return true;
-//            }

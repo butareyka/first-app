@@ -17,8 +17,9 @@ public class InsertObject extends ClientCommand implements Serializable{
         collectionManager.addExpelledStudents();
         collectionManager.addTransferredStudents();
         collectionManager.addFormOfEducation();
-        collectionManager.addUserName();
         collectionManager.addGroupAdmin();
-        return SerializationUtils.serialize(new StudyGroup(collectionManager.takeGroupName(), collectionManager.takeCreationDate(), collectionManager.takeCoordinates(), collectionManager.takeStudentsCount(), collectionManager.takeExpelledStudents(), collectionManager.takeTransferredStudents(), collectionManager.takeFormOfEducation(), collectionManager.takeUserName(), collectionManager.takeGroupAdmin()));
+        StudyGroup studyGroup = new StudyGroup(collectionManager.takeGroupName(), collectionManager.takeCreationDate(), collectionManager.takeCoordinates(), collectionManager.takeStudentsCount(), collectionManager.takeExpelledStudents(), collectionManager.takeTransferredStudents(), collectionManager.takeFormOfEducation(), collectionManager.takeUserName(), collectionManager.takeGroupAdmin());
+        System.out.println(studyGroup);
+        return studyGroup;
     }
 }

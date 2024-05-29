@@ -1,6 +1,6 @@
 package utility;
 
-import models.StudyGroup;
+import models.User;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,55 +13,52 @@ public class ServerResponser implements Runnable{
     private final Logger LOGGER;
     private final String request;
     private final String entryCommand;
+    private User user;
     private ReentrantLock locker;
     private Object commandObject;
 
-    public ServerResponser(Socket socket, Logger logger, ReentrantLock reentrantLock, String req, String command){
+    public ServerResponser(Socket socket, Logger logger, ReentrantLock reentrantLock, String req, String command, User usr){
         this.clientSocket = socket;
         this.LOGGER = logger;
         this.locker = reentrantLock;
         this.request = req;
         this.entryCommand = command;
+        this.user = usr;
     }
 
-    public ServerResponser(Socket socket, Logger logger, ReentrantLock reentrantLock, String req, String command, Object object){
+    public ServerResponser(Socket socket, Logger logger, ReentrantLock reentrantLock, String req, String command, Object object, User usr){
         this.clientSocket = socket;
         this.LOGGER = logger;
         this.locker = reentrantLock;
         this.request = req;
         this.entryCommand = command;
         this.commandObject = object;
+        this.user = usr;
     }
 
     @Override
     public void run() {
-        ServerInvoker serverInvoker = new ServerInvoker();
+        ServerInvoker serverInvoker = new ServerInvoker(locker);
         try {
             locker.lock();
-            if (entryCommand.equals("OKAY?")) {
-                clientSocket.getOutputStream().write("ALL OKAY ILON MASK".getBytes());
-                clientSocket.getOutputStream().flush();
-                LOGGER.log(Level.INFO, "Unpredictable request!\n");
-                clientSocket.close();
-                LOGGER.log(Level.INFO, String.format("Connection closed for port - %s\n", clientSocket.getPort()));
-            }
-            else if (entryCommand.equalsIgnoreCase("quit")) {
-                clientSocket.getOutputStream().write(serverInvoker.invoke(request, null).getBytes());
+            if (entryCommand.equalsIgnoreCase("quit")) {
+                clientSocket.getOutputStream().write(serverInvoker.invoke(request, null, user).getBytes());
                 clientSocket.getOutputStream().flush();
                 LOGGER.log(Level.INFO, String.format("Server sent a response of command - %s to port %s\n", entryCommand, clientSocket.getPort()));
             }
             else if (ServerCommandManager.serverCommandsContainsObject.contains(entryCommand)) {
-                clientSocket.getOutputStream().write(serverInvoker.invoke(request, commandObject).getBytes());
+                clientSocket.getOutputStream().write(serverInvoker.invoke(request, commandObject, user).getBytes());
                 clientSocket.getOutputStream().flush();
                 LOGGER.log(Level.INFO, String.format("Server sent a response of command - %s to port %s\n", entryCommand, clientSocket.getPort()));
             }
             else if (ServerCommandManager.serverCommandsContainsValueAndObject.contains(entryCommand)){
-                clientSocket.getOutputStream().write(serverInvoker.invoke(request, commandObject).getBytes());
+                clientSocket.getOutputStream().write(serverInvoker.invoke(request, commandObject, user).getBytes());
                 clientSocket.getOutputStream().flush();
                 LOGGER.log(Level.INFO, String.format("Server sent a response of command - %s to port %s\n", entryCommand, clientSocket.getPort()));
             }
             else {
-                clientSocket.getOutputStream().write(serverInvoker.invoke(request, null).getBytes());
+                System.out.println(user);
+                clientSocket.getOutputStream().write(serverInvoker.invoke(request, null, user).getBytes());
                 clientSocket.getOutputStream().flush();
                 LOGGER.log(Level.INFO, String.format("Server sent a response of command - %s to port %s\n", entryCommand, clientSocket.getPort()));
             }

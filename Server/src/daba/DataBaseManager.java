@@ -3,11 +3,13 @@ package daba;
 import models.*;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Properties;
 import java.sql.*;
@@ -25,7 +27,7 @@ public class DataBaseManager {
             connection = DriverManager.getConnection(url, properties);
             System.err.println("Successfully connected to the database\n");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error with connection to database " + e.getMessage());
         }
     }
 
@@ -41,54 +43,52 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e) {
-            System.out.println("Error sending request drop ID_SEQ " + e.getMessage());
+            System.err.println("Error sending request drop ID_SEQ " + e.getMessage());
         }
     }
-
-    public void dropEnumHairColor(){
-        try{
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String sql = "DROP TYPE HairColor";
-            statement.executeUpdate(sql);
-            statement.close();
-        } catch (SQLException e){
-            System.out.println("Error sending request drop HairColor " + e.getMessage());
-        }
-    }
-
-    public void dropEnumFormOfEducation(){
-        try{
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String sql = "DROP TYPE FormOfEducation;";
-            statement.executeUpdate(sql);
-            statement.close();
-        } catch (SQLException e){
-            System.out.println("Error sending request drop FormOfEducation " + e.getMessage());
-        }
-    }
-
-    public void dropEnumEyesColor(){
-        try{
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String sql = "DROP TYPE EyesColor;";
-            statement.executeUpdate(sql);
-            statement.close();
-        } catch (SQLException e){
-            System.out.println("Error sending request drop EyesColor " + e.getMessage());
-        }
-    }
-
-    public void dropEnumCountry(){
-        try{
-            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            String sql = "DROP TYPE Country;";
-            statement.executeUpdate(sql);
-            statement.close();
-        } catch (SQLException e){
-            System.out.println("Error sending request drop Country " + e.getMessage());
-        }
-    }
-
+//    public void dropEnumHairColor(){
+//        try{
+//            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//            String sql = "DROP TYPE HairColor";
+//            statement.executeUpdate(sql);
+//            statement.close();
+//        } catch (SQLException e){
+//            System.out.println("Error sending request drop HairColor " + e.getMessage());
+//        }
+//    }
+//
+//    public void dropEnumFormOfEducation(){
+//        try{
+//            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//            String sql = "DROP TYPE FormOfEducation;";
+//            statement.executeUpdate(sql);
+//            statement.close();
+//        } catch (SQLException e){
+//            System.out.println("Error sending request drop FormOfEducation " + e.getMessage());
+//        }
+//    }
+//
+//    public void dropEnumEyesColor(){
+//        try{
+//            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//            String sql = "DROP TYPE EyesColor;";
+//            statement.executeUpdate(sql);
+//            statement.close();
+//        } catch (SQLException e){
+//            System.out.println("Error sending request drop EyesColor " + e.getMessage());
+//        }
+//    }
+//
+//    public void dropEnumCountry(){
+//        try{
+//            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+//            String sql = "DROP TYPE Country;";
+//            statement.executeUpdate(sql);
+//            statement.close();
+//        } catch (SQLException e){
+//            System.out.println("Error sending request drop Country " + e.getMessage());
+//        }
+//    }
     public void createEnumHairColor(){
         try{
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
@@ -96,7 +96,7 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request HairColor " + e.getMessage());
+            System.err.println("Error sending request HairColor " + e.getMessage());
         }
     }
 
@@ -107,7 +107,7 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request EyesColor " + e.getMessage());
+            System.err.println("Error sending request EyesColor " + e.getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request FormOfEducation " + e.getMessage());
+            System.err.println("Error sending request FormOfEducation " + e.getMessage());
         }
     }
 
@@ -129,45 +129,46 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request Country " + e.getMessage());
+            System.err.println("Error sending request Country " + e.getMessage());
         }
     }
 
     public void createTableCoordinates(){
+        createSeqId();
         try{
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String sql = "CREATE TABLE IF NOT EXISTS Coordinates (" +
                     "    coordinatesId SERIAL PRIMARY KEY," +
-                    "    coordinatesX FLOAT NOT NULL," +
-                    "    coordinatesY INT NOT NULL" +
+                    "    userName TEXT," +
+                    "    coordinatesX FLOAT," +
+                    "    coordinatesY INT" +
                     ");";
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request Coordinates " + e.getMessage());
+            System.err.println("Error sending request Coordinates " + e.getMessage());
         }
     }
 
     public void createTableLocation(){
+        createSeqId();
         try{
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String sql = "CREATE TABLE IF NOT EXISTS Location (" +
                     "    locationId SERIAL PRIMARY KEY," +
-                    "    locationX BIGINT NOT NULL," +
-                    "    locationY FLOAT NOT NULL," +
-                    "    locationName TEXT NOT NULL" +
+                    "    userName TEXT," +
+                    "    locationX BIGINT," +
+                    "    locationY FLOAT," +
+                    "    locationName TEXT" +
                     ");";
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e){
-            System.out.println("Error sending request Location " + e.getMessage());
+            System.err.println("Error sending request Location " + e.getMessage());
         }
     }
 
     public void createTablePerson(){
-//        dropEnumCountry();
-//        dropEnumEyesColor();
-//        dropEnumHairColor();
 //        createEnumCountry();
 //        createEnumHairColor();
 //        createEnumEyesColor();
@@ -176,22 +177,22 @@ public class DataBaseManager {
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String sql = "CREATE TABLE IF NOT EXISTS Person (" +
                     "    adminName TEXT PRIMARY KEY," +
+                    "    userName TEXT," +
                     "    height BIGINT," +
                     "    eyeColor EyesColor," +
-                    "    hairColor HairColor NOT NULL," +
+                    "    hairColor HairColor," +
                     "    nationality Country," +
-                    "    locationId BIGINT NOT NULL," +
+                    "    locationId SERIAL," +
                     "    FOREIGN KEY (locationId) REFERENCES Location(locationId)" +
                     ");";
             statement.executeUpdate(sql);
             statement.close();;
         } catch (SQLException e) {
-            System.out.println("Error sending request Person " + e.getMessage());
+            System.err.println("Error sending request Person " + e.getMessage());
         }
     }
 
     public void createTableStudyGroup(){
-//        dropEnumFormOfEducation();
 //        createEnumFormOfEducation();
         createTableCoordinates();
         createTablePerson();
@@ -200,15 +201,15 @@ public class DataBaseManager {
             Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String sql = "CREATE TABLE IF NOT EXISTS StudyGroup (" +
                     "    groupId BIGINT PRIMARY KEY DEFAULT nextval('ID_SEQ')," +
-                    "    userName TEXT NOT NULL," +
-                    "    groupName TEXT NOT NULL," +
-                    "    coordinatesId BIGINT NOT NULL," +
-                    "    creationDate TIMESTAMP NOT NULL," +
+                    "    userName TEXT," +
+                    "    groupName TEXT," +
+                    "    coordinatesId SERIAL," +
+                    "    creationDate TIMESTAMP," +
                     "    studentsCount INT," +
                     "    expelledStudents BIGINT," +
-                    "    transferredStudents INT NOT NULL," +
-                    "    formOfEducation FormOfEducation NOT NULL," +
-                    "    groupAdminName TEXT NOT NULL," +
+                    "    transferredStudents INT," +
+                    "    formOfEducation FormOfEducation," +
+                    "    groupAdminName TEXT," +
                     "    FOREIGN KEY (coordinatesId) REFERENCES Coordinates(coordinatesId)," +
                     "    FOREIGN KEY (groupAdminName) REFERENCES Person(adminName)," +
                     "    FOREIGN KEY (userName) REFERENCES Users(userName)" +
@@ -216,7 +217,7 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e) {
-            System.out.println("Error sending request StudyGroup " + e.getMessage());
+            System.err.println("Error sending request StudyGroup " + e.getMessage());
         }
     }
     public void createTableUser(){
@@ -228,7 +229,7 @@ public class DataBaseManager {
             statement.executeUpdate(sql);
             statement.close();
         } catch (SQLException e) {
-            System.out.println("Error sending request Users " + e.getMessage());
+            System.err.println("Error sending request Users " + e.getMessage());
         }
     }
 
@@ -249,7 +250,7 @@ public class DataBaseManager {
             }
             resultSet.close();
         } catch (SQLException e) {
-            System.out.println("Error with sql(");
+            System.err.println("Error with checkUser " + e.getMessage());
         }
         return exists;
     }
@@ -270,8 +271,8 @@ public class DataBaseManager {
             }
             prepareStatement.close();
             resultSet.close();
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
+        } catch (SQLException e) {
+            System.err.println("Error with checkPassword " + e.getMessage());
         }
         return false;
     }
@@ -284,43 +285,13 @@ public class DataBaseManager {
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2, PasswordHasher.hashingPassword(passwd));
             preparedStatement.executeUpdate();
-            System.out.println("User added successfully.");
+            System.err.println("User added successfully.");
         } catch (SQLException e) {
-            System.out.println("Error adding user registration" + e.getMessage());
+            System.err.println("Error adding user registration " + e.getMessage());
         }
     }
 
     public LinkedHashMap<Long, StudyGroup> readFromDataBase() throws IOException {
-//        properties.load(new FileInputStream(System.getenv("PROP")));
-//        connectDataBase(url, properties); // Подключаемся к базе данных
-//        LinkedHashMap<Long, StudyGroup> studyGroupLinkedHashMap = new LinkedHashMap<>();
-//        String sql = "SELECT * FROM StudyGroup"; // Запрос для выборки данных из таблицы StudyGroup
-//        try (Statement statement = connection.createStatement();
-//             ResultSet resultSet = statement.executeQuery(sql)) {
-//            // Перебираем результаты запроса
-//            while (resultSet.next()) {
-//                StudyGroup studyGroup = new StudyGroup();
-//                // Заполняем объект StudyGroup данными из результата запроса
-//                studyGroup.setGroupId(resultSet.getLong("groupId"));
-//                studyGroup.setUserName(resultSet.getString("userName"));
-//                studyGroup.setGroupName(resultSet.getString("groupName"));
-//                studyGroup.setCreationDate(resultSet.getTimestamp("creationDate").toLocalDateTime());
-//                studyGroup.setStudentsCount(resultSet.getInt("studentsCount"));
-//                studyGroup.setExpelledStudents(resultSet.getLong("expelledStudents"));
-//                studyGroup.setTransferredStudents(resultSet.getInt("transferredStudents"));
-//                studyGroup.setFormOfEducation(FormOfEducation.valueOf(resultSet.getString("formOfEducation")));
-//                studyGroup.setGroupName(resultSet.getString("groupAdminName"));
-//
-//                // Добавляем объект StudyGroup в LinkedHashMap
-//                studyGroupLinkedHashMap.put(studyGroup.getGroupId(), studyGroup);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error reading from database: " + e.getMessage());
-//        }
-//        return studyGroupLinkedHashMap;
-
-//        groupId, userName, groupName, coordinatesId, studentsCount, expelledStudents, transferredStudents, formOfEducation, groupAdminName
-
         properties.load(new FileInputStream(System.getenv("PROP")));
         connectDataBase(url, properties);
         LinkedHashMap<Long, StudyGroup> studyGroupLinkedHashMap = new LinkedHashMap<>();
@@ -336,6 +307,7 @@ public class DataBaseManager {
                 studyGroup.setUserName(rs.getString("userName"));
                 studyGroup.setGroupName(rs.getString("groupName"));
                 studyGroup.setCreationDate(rs.getDate("creationDate").toLocalDate().atStartOfDay());
+                coordinates.setUserName(rs.getString("userName"));
                 coordinates.setX(rs.getFloat("coordinatesX"));
                 coordinates.setY(rs.getInt("coordinatesY"));
                 studyGroup.setCoordinates(coordinates);
@@ -344,101 +316,172 @@ public class DataBaseManager {
                 studyGroup.setTransferredStudents(rs.getInt("transferredStudents"));
                 studyGroup.setFormOfEducation(FormOfEducation.valueOf(rs.getString("formOfEducation")));
                 person.setAdminName(rs.getString("adminName"));
+                person.setUserName(rs.getString("userName"));
                 person.setHeight(rs.getLong("height"));
                 person.setEyeColor(EyesColor.valueOf(rs.getString("eyeColor")));
                 person.setHairColor(HairColor.valueOf(rs.getString("hairColor")));
                 person.setNationality(Country.valueOf(rs.getString("nationality")));
+                location.setUserName(rs.getString("userName"));
                 location.setLocationName(rs.getString("locationName"));
                 location.setX(rs.getInt("locationX"));
-                location.setY(rs.getDouble("locationY"));
+                location.setY(rs.getFloat("locationY"));
                 person.setLocation(location);
                 studyGroup.setGroupAdmin(person);
                 studyGroupLinkedHashMap.put(rs.getLong("groupId"), studyGroup);
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error reading collection " + e.getMessage());
         }
         return studyGroupLinkedHashMap;
     }
 
-    public void insertIntoCoordinates(float coordinatesX, int coordinatesY) {
+    public void insertIntoCoordinates(String userName, float coordinatesX, int coordinatesY) {
         try {
+            properties.load(new FileInputStream(System.getenv("PROP")));
+            connectDataBase(url, properties);
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO Coordinates (coordinatesX, coordinatesY) " +
-                            "VALUES (?, ?)"
-            );
-            preparedStatement.setFloat(1, coordinatesX);
-            preparedStatement.setInt(2, coordinatesY);
-
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println("Data inserted successfully into Coordinates table.");
-        } catch (SQLException e) {
-            System.out.println("Error inserting data into Coordinates table: " + e.getMessage());
-        }
-    }
-
-    public void insertIntoLocation(long locationX, float locationY, String locationName) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO Location (locationX, locationY, locationName) " +
+                    "INSERT INTO Coordinates (userName, coordinatesX, coordinatesY) " +
                             "VALUES (?, ?, ?)"
             );
-            preparedStatement.setLong(1, locationX);
-            preparedStatement.setFloat(2, locationY);
-            preparedStatement.setString(3, locationName);
+            preparedStatement.setString(1, userName);
+            preparedStatement.setFloat(2, coordinatesX);
+            preparedStatement.setInt(3, coordinatesY);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            System.out.println("Data inserted successfully into Location table.");
-        } catch (SQLException e) {
-            System.out.println("Error inserting data into Location table: " + e.getMessage());
+            System.err.println("Data inserted successfully into Coordinates table\n");
+        } catch (SQLException | IOException e) {
+            System.err.println("Error inserting data into Coordinates table " + e.getMessage());
         }
     }
 
-    public void insertIntoPerson(String adminName, long height, EyesColor eyeColor, HairColor hairColor, Country nationality, long locationId) {
+    public void insertIntoLocation(String userName, long locationX, float locationY, String locationName) {
         try {
+            properties.load(new FileInputStream(System.getenv("PROP")));
+            connectDataBase(url, properties);
             PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO Person (adminName, height, eyeColor, hairColor, nationality, locationId) " +
-                            "VALUES (?, ?, ?, ?, ?, ?)"
-            );
-            preparedStatement.setString(1, adminName);
-            preparedStatement.setLong(2, height);
-            preparedStatement.setString(3, eyeColor.name()); // Enum EyesColor преобразуется в строку
-            preparedStatement.setString(4, hairColor.name()); // Enum HairColor преобразуется в строку
-            preparedStatement.setString(5, nationality.name()); // Enum Country преобразуется в строку
-            preparedStatement.setLong(6, locationId);
-
-            preparedStatement.executeUpdate();
-            preparedStatement.close();
-            System.out.println("Data inserted successfully into Person table.");
-        } catch (SQLException e) {
-            System.out.println("Error inserting data into Person table: " + e.getMessage());
-        }
-    }
-
-    public void insertIntoStudyGroup(String userName, String groupName, long coordinatesId, Timestamp creationDate, int studentsCount, long expelledStudents, int transferredStudents, FormOfEducation formOfEducation, long groupAdminName) {
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO StudyGroup (userName, groupName, coordinatesId, creationDate, studentsCount, expelledStudents, transferredStudents, formOfEducation, groupAdminName) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO Location (userName, locationX, locationY, locationName) " +
+                            "VALUES (?, ?, ?, ?)"
             );
             preparedStatement.setString(1, userName);
-            preparedStatement.setString(2, groupName);
-            preparedStatement.setLong(3, coordinatesId);
-            preparedStatement.setTimestamp(4, creationDate);
+            preparedStatement.setLong(2, locationX);
+            preparedStatement.setFloat(3, locationY);
+            preparedStatement.setString(4, locationName);
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.err.println("Data inserted successfully into Location table\n");
+        } catch (SQLException | IOException e) {
+            System.err.println("Error inserting data into Location table " + e.getMessage());
+        }
+    }
+
+    public void insertIntoPerson(String userName, String adminName, long height, EyesColor eyeColor, HairColor hairColor, Country nationality) {
+        try {
+            properties.load(new FileInputStream(System.getenv("PROP")));
+            connectDataBase(url, properties);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO Person (userName, adminName, height, eyeColor, hairColor, nationality) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)"
+            );
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, adminName);
+            preparedStatement.setLong(3, height);
+            preparedStatement.setObject(4, eyeColor, Types.OTHER); // Enum EyesColor
+            preparedStatement.setObject(5, hairColor, Types.OTHER); // Enum HairColor
+            preparedStatement.setObject(6, nationality, Types.OTHER); // Enum Country
+
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            System.err.println("Data inserted successfully into Person table\n");
+        } catch (SQLException | IOException e) {
+            System.err.println("Error inserting data into Person table " + e.getMessage());
+        }
+    }
+
+    public void insertIntoStudyGroup(long groupId, String userName, String groupName, LocalDateTime creationDate, int studentsCount, long expelledStudents, int transferredStudents, FormOfEducation formOfEducation, String groupAdminName) {
+        try {
+            properties.load(new FileInputStream(System.getenv("PROP")));
+            connectDataBase(url, properties);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO StudyGroup (groupId, userName, groupName, creationDate, studentsCount, expelledStudents, transferredStudents, formOfEducation, groupAdminName) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            );
+            preparedStatement.setLong(1, groupId);
+            preparedStatement.setString(2, userName);
+            preparedStatement.setString(3, groupName);
+            preparedStatement.setDate(4, Date.valueOf(creationDate.toLocalDate()));
             preparedStatement.setInt(5, studentsCount);
             preparedStatement.setLong(6, expelledStudents);
             preparedStatement.setInt(7, transferredStudents);
-            preparedStatement.setString(8, formOfEducation.name()); // Enum FormOfEducation преобразуется в строку
-            preparedStatement.setLong(9, groupAdminName);
+            preparedStatement.setObject(8, formOfEducation, Types.OTHER); // Enum FormOfEducation
+            preparedStatement.setString(9, groupAdminName);
 
             preparedStatement.executeUpdate();
             preparedStatement.close();
-            System.out.println("Data inserted successfully into StudyGroup table.");
-        } catch (SQLException e) {
-            System.out.println("Error inserting data into StudyGroup table: " + e.getMessage());
+            System.err.println("Data inserted successfully into StudyGroup table\n");
+        } catch (SQLException | IOException e) {
+            System.err.println("Error inserting data into StudyGroup table " + e.getMessage());
+        }
+    }
+
+//    public void deleteOneLineFromCollection(long groupId) {
+//        try{
+//            properties.load(new FileInputStream(System.getenv("PROP")));
+//            connectDataBase(url, properties);
+//            PreparedStatement preparedStatement = connection.prepareStatement(
+//                    "DELETE FROM StudyGroup WHERE groupId = (?)"
+//            );
+//
+//            preparedStatement.setLong(1, groupId);
+//
+//            preparedStatement.executeUpdate();
+//            preparedStatement.close();
+//            System.err.println("Line successfully deleted!\n");
+//        } catch (SQLException | IOException e) {
+//            System.err.println("Error deleting line from collection tables " + e.getMessage());
+//        }
+//    }
+
+    public void deleteAllCollectionTable(String userName){
+        try {
+            properties.load(new FileInputStream(System.getenv("PROP")));
+            connectDataBase(url, properties);
+
+            PreparedStatement deleteFromCoordinates = connection.prepareStatement(
+                    "DELETE FROM Coordinates WHERE userName = ?"
+            );
+            deleteFromCoordinates.setString(1, userName);
+
+            PreparedStatement deleteFromLocation = connection.prepareStatement(
+                    "DELETE FROM Location WHERE userName = ?"
+            );
+            deleteFromLocation.setString(1, userName);
+
+            PreparedStatement deleteFromPerson = connection.prepareStatement(
+                    "DELETE FROM Person WHERE userName = ?"
+            );
+            deleteFromPerson.setString(1, userName);
+
+            PreparedStatement deleteFromStudyGroup = connection.prepareStatement(
+                    "DELETE FROM StudyGroup WHERE userName = ?"
+            );
+            deleteFromStudyGroup.setString(1, userName);
+
+            deleteFromCoordinates.executeUpdate();
+            deleteFromLocation.executeUpdate();
+            deleteFromPerson.executeUpdate();
+            deleteFromStudyGroup.executeUpdate();
+
+            deleteFromCoordinates.close();
+            deleteFromLocation.close();
+            deleteFromPerson.close();
+            deleteFromStudyGroup.close();
+
+            System.err.println("Collection tables successfully deleted!\n");
+        } catch (SQLException | IOException e) {
+            System.err.println("Error deleting collection tables " + e.getMessage());
         }
     }
 }

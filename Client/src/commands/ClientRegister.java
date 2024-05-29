@@ -1,6 +1,5 @@
 package commands;
 
-import exceptions.ServerUnavailableException;
 import models.User;
 import org.apache.commons.lang3.SerializationUtils;
 import org.jline.reader.LineReader;
@@ -26,11 +25,11 @@ public class ClientRegister extends ClientCommand implements Serializable {
             System.out.println("IOException in builder by jline" + e.getMessage());
         }
         LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
-        String password = reader.readLine("Enter new user's password:", '*');
-        String passwordAgain = reader.readLine("Enter new user's password again:", '*');
+        String password = reader.readLine("Enter new user's password:\n", '*');
+        String passwordAgain = reader.readLine("Enter new user's password again:\n", '*');
 
         if (passwordAgain.equals(password)){
-            return SerializationUtils.serialize(new User(userName, password));
+            return new User(userName, password);
         } else {
             executionForRequestReturn(null);
         }

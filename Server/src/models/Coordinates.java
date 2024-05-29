@@ -6,10 +6,12 @@ import java.io.Serializable;
 public class Coordinates implements Serializable {
     private double x; //Значение поля должно быть больше -339, Поле не может быть null
     private int y;
+    private String userName;
 
-    public Coordinates(double x, int y){
+    public Coordinates(double x, int y, String userName){
         this.x = x;
         this.y = y;
+        this.userName = userName;
     }
 
     public Coordinates() {
@@ -32,10 +34,8 @@ public class Coordinates implements Serializable {
         this.y = y;
     }
 
-    public Coordinates convertStringToCoordinates(String str){
-        String[] str_coord;
-        str_coord = str.split(";");
-        return new Coordinates(Double.parseDouble(str_coord[0]), Integer.parseInt(str_coord[1]));
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

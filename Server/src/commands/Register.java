@@ -12,9 +12,8 @@ public class Register extends ServerCommand implements Serializable {
     }
 
     @Override
-    public Object executionForResponse(Object value) throws IOException {
+    public Object executionForResponse(Object value, User user) throws IOException {
         DataBaseManager dataBaseManager = new DataBaseManager();
-        User user = (User) value;
         System.out.println(user.getUserName() + user.getPassword());
         dataBaseManager.registerUser(user.getUserName(), user.getPassword());
         return "New user successfully register!";

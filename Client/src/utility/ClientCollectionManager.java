@@ -31,7 +31,7 @@ public class ClientCollectionManager implements Serializable {
     private HairColor hairColor;
     private Country nationality;
     private long locationCoordinatesX;
-    private Double locationCoordinatesY;
+    private Float locationCoordinatesY;
     private String locationName;
     private Location location;
     private Person groupAdmin;
@@ -93,7 +93,7 @@ public class ClientCollectionManager implements Serializable {
         addGroupCoordinatesX();
         addGroupCoordinatesY();
         try{
-            coordinates = new Coordinates(takeGroupCoordinatesX(), takeGroupCoordinatesY());
+            coordinates = new Coordinates(takeGroupCoordinatesX(), takeGroupCoordinatesY(), takeUserName());
             studyGroup.setCoordinates(coordinates);
         } catch (Exception e){
             System.out.println("Ошибка при заполнении конструктора для Coordinates! " + e.getMessage());
@@ -208,15 +208,8 @@ public class ClientCollectionManager implements Serializable {
         return formOfEducation;
     }
 
-    public void addUserName(){
-        System.out.println("Введите имя пользователя: ");
-        System.out.println("Данные принимаются в виде (Имя_пользователя)");
-        userName = scanner.next();
-        studyGroup.setUserName(userName);
-    }
-
     public String takeUserName(){
-        return adminName;
+        return userName;
     }
 
     public void addAdminName(){
@@ -346,7 +339,7 @@ public class ClientCollectionManager implements Serializable {
         String locationCoordinatesYString = scanner.next();
         locationCoordinatesY = null;
         try {
-            locationCoordinatesY = Double.parseDouble(locationCoordinatesYString);
+            locationCoordinatesY = Float.parseFloat(locationCoordinatesYString);
             locat.setY(locationCoordinatesY);
         } catch (Exception e){
             System.out.println("Неправильно попробуй еще раз! " + e.getMessage());
@@ -354,7 +347,7 @@ public class ClientCollectionManager implements Serializable {
         }
     }
 
-    public Double takeLocationCoordinatesY(){
+    public Float takeLocationCoordinatesY(){
         if (validator.validate("locationCoordinatesY", locationCoordinatesY)){
             addLocationCoordinatesY();
         }
@@ -380,7 +373,7 @@ public class ClientCollectionManager implements Serializable {
         addLocationCoordinatesY();
         addLocationName();
         try {
-            location = new Location(takeLocationName(), takeLocationCoordinatesX(), takeLocationCoordinatesY());
+            location = new Location(takeLocationName(), takeLocationCoordinatesX(), takeLocationCoordinatesY(), takeUserName());
             person.setLocation(location);
         } catch (Exception e){
             System.out.println("Ошибка при заполнении конструктора для Location! " + e.getMessage());
@@ -404,7 +397,7 @@ public class ClientCollectionManager implements Serializable {
         addNationality();
         addLocation();
         try{
-            groupAdmin = new Person(takeAdminName(), takeHeight(), takeEyeColor(), takeHairColor(), takeNationality(), takeLocation());
+            groupAdmin = new Person(takeAdminName(), takeHeight(), takeEyeColor(), takeHairColor(), takeNationality(), takeLocation(), takeUserName());
             studyGroup.setGroupAdmin(groupAdmin);
         } catch (Exception e){
             System.out.println("Ошибка при заполнении конструктора для GroupAdmin! " + e.getMessage());

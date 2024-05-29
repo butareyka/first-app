@@ -1,9 +1,10 @@
 package utility;
 
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-public class ClientInvoker {
+public class ClientInvoker implements Serializable {
     static private ByteBuffer buffer;
     static private SocketChannel channel;
     public static final ClientInvoker clientInvoker = new ClientInvoker();
@@ -30,10 +31,10 @@ public class ClientInvoker {
             if (request.equals("register") || request.equals("log_in")){
                 return ClientCommandManager.clientCommands.get(request).executionForRequestReturn(request);
             } else {
-                return ClientCommandManager.clientCommands.get(request.split(" ")[0]).executionForRequestReturn(request);
+                return ClientCommandManager.clientCommands.get("insertObject").executionForRequestReturn(request);
             }
         } else if (ClientCommandManager.clientCommandsContainsValueAndObject.contains(request.split(" ")[0])) {
-            return ClientCommandManager.clientCommands.get(request.split(" ")[0]).executionForRequestReturn(request);
+            return ClientCommandManager.clientCommands.get("insertObject").executionForRequestReturn(request);
         } else if (request.contains("execute_script")) {
             return ClientCommandManager.clientCommands.get("execute_script").executionForRequestReturn(request);
         } else{

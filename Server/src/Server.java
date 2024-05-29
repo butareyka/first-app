@@ -34,7 +34,7 @@ public class Server {
         LOGGER.log(Level.INFO, "Creating server command objects\n");
         new ServerCommandManager() {{
             registerServerCommands("help", new Help());
-            registerServerCommands("info", new Info());
+            registerServerCommands("quit", new Quit());
             registerServerCommands("show", new Show());
             registerServerCommands("insert", new Insert());
             registerServerCommands("update", new Update());
@@ -49,6 +49,8 @@ public class Server {
             registerServerCommands("print_field_descending_expelled_students", new PrintFieldDescendingExpelledStudents());
             registerServerCommands("log_in", new Authorization());
             registerServerCommands("register", new Register());
+            registerServerCommands("log_out", new LogOut());
+            registerServerCommands("load_collection", new LoadCollection());
         }};
 
         LOGGER.log(Level.INFO, "We create command objects that require an object for input\n");
@@ -56,8 +58,6 @@ public class Server {
             registerServerCommandsContainsObject("insert");
             registerServerCommandsContainsObject("remove_greater");
             registerServerCommandsContainsObject("remove_lower");
-            registerServerCommandsContainsObject("log_in");
-            registerServerCommandsContainsObject("register");
         }};
 
         LOGGER.log(Level.INFO, "We create command objects that require an argument for input\n");
@@ -74,12 +74,6 @@ public class Server {
             registerServerCommandsContainsValueAndObject("update");
         }};
 
-        LOGGER.log(Level.INFO, "We create objects of commands auth and reg\n");
-        new ServerCommandManager() {{
-            registerAuthAndReg("log_in");
-            registerAuthAndReg("register");
-        }};
-
         try {
             String url = System.getenv("URL_DB");
             Properties properties = new Properties();
@@ -87,6 +81,7 @@ public class Server {
             DataBaseManager dataBaseManager = new DataBaseManager();
             dataBaseManager.connectDataBase(url, properties);
             dataBaseManager.initDataBase();
+            new LoadCollection();
         } catch (IOException e){
             e.printStackTrace();
         }

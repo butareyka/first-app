@@ -89,9 +89,6 @@ public class StudyGroup implements Serializable {
         this.formOfEducation = formOfEducation;
     }
 
-    public String getUserName(){
-        return userName;
-    }
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -106,8 +103,8 @@ public class StudyGroup implements Serializable {
     @Override
     public String toString(){
         return  "\"group_id: " + group_id +
-                ", groupName: " + groupName  +
                 ", userName: " + userName +
+                ", groupName: " + groupName  +
                 ", creationDate: " + creationDate +
                 ", coordinates: " + coordinates +
                 ", studentsCount: " + studentsCount +

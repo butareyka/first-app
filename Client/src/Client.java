@@ -1,5 +1,6 @@
 import commands.*;
 import exceptions.ServerUnavailableException;
+import models.User;
 import utility.ClientCommandManager;
 import utility.ClientHandler;
 import utility.ClientRequester;
@@ -10,6 +11,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.UnresolvedAddressException;
 import java.util.*;
 
 import static utility.ClientInvoker.clientInvoker;
@@ -22,25 +24,20 @@ public class Client {
     static ClientHandler clientHandler = new ClientHandler();
 
     public static void main(String[] args) {
-        new ClientCommandManager() {{
-            register("insertObject", new InsertObject());
-            register("exit", new Exit());
-            register("execute_script", new ExecuteScript());
-            register("log_in", new ClientAuthorization());
-            register("register", new ClientRegister());
-        }};
+        ClientCommandManager commandManager = new ClientCommandManager();
+        commandManager.register("insertObject", new InsertObject());
+        commandManager.register("exit", new Exit());
+        commandManager.register("execute_script", new ExecuteScript());
+        commandManager.register("log_in", new ClientAuthorization());
+        commandManager.register("register", new ClientRegister());
+        commandManager.registerClientCommandsContainsObject("insert");
+        commandManager.registerClientCommandsContainsObject("remove_greater");
+        commandManager.registerClientCommandsContainsObject("remove_lower");
+        commandManager.registerClientCommandsContainsObject("log_in");
+        commandManager.registerClientCommandsContainsObject("register");
+        commandManager.registerClientCommandsContainsValueAndObject("update");
+        commandManager.registerClientCommandsContainsValueAndObject("update");
 
-        new ClientCommandManager() {{
-            registerClientCommandsContainsObject("insert");
-            registerClientCommandsContainsObject("remove_greater");
-            registerClientCommandsContainsObject("remove_lower");
-            registerClientCommandsContainsObject("log_in");
-            registerClientCommandsContainsObject("register");
-        }};
-
-        new ClientCommandManager() {{
-            registerClientCommandsContainsValueAndObject("update");
-        }};
         connecting();
     }
 
@@ -53,66 +50,51 @@ public class Client {
             SERVER_PORT = scanner.nextInt();
 
             SocketChannel socketChannel = SocketChannel.open();
-            socketChannel.configureBlocking(false);
-            socketChannel.connect(new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT));
+            try {
+                socketChannel.configureBlocking(false);
+                socketChannel.connect(new InetSocketAddress(SERVER_ADDRESS, SERVER_PORT));
+            } catch (UnresolvedAddressException e) {
+                System.out.println("You enter incorrect server address. Try again!");
+                connecting();
+            }
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(2048);
             clientInvoker.setBuffer(byteBuffer);
             clientInvoker.setSocketChannel(socketChannel);
 
             if (checkFirstConnection()){
-                System.out.println("Connection to the server is established");
-            } else {
-                System.out.println("Connection to the server is not established");
-                connecting();
-            }
-
-            while (true) {
-                if (ping(SERVER_ADDRESS, SERVER_PORT, CONNECTION_TIMEOUT)){
-                    System.out.println("What do you wanna do with massage:\n1 - send\n2 - receive");
+                System.out.println("Connection GOOD!");
+                while (true) {
+                    System.out.println("\nWhat do you wanna do with massage:\n1 - send\n2 - receive");
                     String actionWithMassage = scanner.next();
-                    if (actionWithMassage.equals("1") || actionWithMassage.equals("send") && socketChannel.isConnected()) {
-                        System.out.println("What command do you wanna send the server?");
-                        String request = clientRequester.makeRequest();
-                        clientRequester.sendRequest(request);
+                    switch (actionWithMassage){
+                        case("1"):
+                        case("send"):
+                            System.out.println("What command do you wanna send the server?");
+                            String request = clientRequester.makeRequest();
+                            clientRequester.sendRequest(request);
+                            break;
+                        case("2"):
+                        case("receive"):
+                            System.out.println(clientHandler.receiveResponse());
+                            break;
                     }
-                    if (actionWithMassage.equals("2") || actionWithMassage.equals("receive")) {
-                        System.out.println(clientHandler.receiveResponse());
-                    }
-                } else {
-                    throw new ServerUnavailableException();
                 }
             }
+            else {
+                System.out.println("Error in first connection with server. Check did you enter the port on the server!");
+                clientRequester.setUser(new User("testUser", "1234"));
+                connecting();
+            }
         } catch (IOException | ServerUnavailableException | ClassNotFoundException e) {
-            System.out.println("IOException - " + e.getMessage());
+            System.out.println("Error with connection with server. " + e.getMessage());
+            clientRequester.setUser(new User("testUser", "1234"));
             connecting();
         }
     }
 
-    public static boolean ping(String host, int port, int timeout) {
-        try {
-            SocketChannel socketChannel = SocketChannel.open();
-            socketChannel.socket().setSoTimeout(timeout);
-            socketChannel.connect(new InetSocketAddress(host, port));
-
-            ByteBuffer buffer = ByteBuffer.allocate(5);
-            buffer.put("OKAY?".getBytes());
-            buffer.flip();
-            socketChannel.write(buffer);
-            buffer.clear();
-
-            int bytesRead = socketChannel.read(buffer);
-            socketChannel.close();
-
-            return bytesRead > 0;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public static boolean checkFirstConnection(){
-        try {
-            Selector selector = Selector.open();
+    public static boolean checkFirstConnection() throws ServerUnavailableException, ClassNotFoundException {
+        try (Selector selector = Selector.open()){
             clientInvoker.getSocketChannel().register(selector, SelectionKey.OP_CONNECT);
             selector.select(CONNECTION_TIMEOUT);
             Set<SelectionKey> selectedKeys = selector.selectedKeys();
@@ -121,54 +103,9 @@ public class Client {
             } else {
                 clientInvoker.getSocketChannel().finishConnect();
             }
-            selector.close();
+            return true;
         } catch (IOException e) {
-            System.out.println("IOException " + e.getMessage());
+            return false;
         }
-        return ping(SERVER_ADDRESS, SERVER_PORT, CONNECTION_TIMEOUT);
     }
-
-//    public static boolean authorization(){
-//        Scanner scanner = new Scanner(System.in);
-//        try {
-//            System.out.println("Enter username:");
-//            String userName = scanner.next();
-//
-//            Terminal terminal = TerminalBuilder.builder().system(true).build();
-//            LineReader reader = LineReaderBuilder.builder().terminal(terminal).build();
-//            String password = reader.readLine("Enter password:", '*');
-//            String passwordAgain = reader.readLine("Enter password again:", '*');
-//            if (passwordAgain.equals(password)){
-//                clientRequester.sendRequest("authorization");
-//            } else {
-//                authorization();
-//            }
-//
-//            if (clientHandler.receiveResponse().equals("Don't exist")){
-//                System.out.printf("User with name %s doesn't exist or you made mistake in name or password. Try again!", userName);
-//                return false;
-//            } else {
-//                System.out.printf("You successfully logged in as %s%n", userName);
-//                return true;
-//            }
-//
-//        } catch (IOException | ClassNotFoundException | ServerUnavailableException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
-//    public static void register(String startWith) {
-//        try {
-//            if (clientHandler.receiveResponse().equals("Enter new user's name: ")){
-//                String newName = clientRequester.makeRequest();
-//                clientRequester.sendRequest(newName);
-//            } else if (clientHandler.receiveResponse().equals("New user was successfully register!")){
-//                System.out.println("New user was successfully register!");
-//            } else {
-////                register();
-//            }
-//        } catch (IOException | ServerUnavailableException | ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

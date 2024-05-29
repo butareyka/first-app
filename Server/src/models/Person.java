@@ -10,14 +10,16 @@ public class Person implements Serializable {
     private HairColor hairColor; //Поле не может быть null
     private Country nationality; //Поле может быть null
     private Location location; //Поле может быть null
+    private String userName;
 
-    public Person(String adminName, long height, EyesColor eyeColor, HairColor hairColor, Country nationality, Location location){
+    public Person(String adminName, long height, EyesColor eyeColor, HairColor hairColor, Country nationality, Location location, String userName){
         this.adminName = adminName;
         this.height = height;
         this.eyeColor = eyeColor;
         this.hairColor = hairColor;
         this.nationality = nationality;
         this.location = location;
+        this.userName = userName;
     }
 
     public Person(){}
@@ -65,6 +67,10 @@ public class Person implements Serializable {
     }
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

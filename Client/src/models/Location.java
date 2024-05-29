@@ -5,13 +5,15 @@ import java.io.Serializable;
 
 public class Location implements Serializable {
     private long x;
-    private Double y; //Поле не может быть null
+    private float y; //Поле не может быть null
     private String locationName; //Длина строки не должна быть больше 979, Поле не может быть null
+    private String userName;
 
-    public Location(String locationName, long x, Double y){
+    public Location(String locationName, long x, float y, String userName){
         this.x = x;
         this.y = y;
         this.locationName = locationName;
+        this.userName = userName;
     }
 
     public Location() {
@@ -21,16 +23,16 @@ public class Location implements Serializable {
     private static final long serialVersionUID = 3L;
 
     public long getX() {
-            return x;
-        }
+        return x;
+    }
     public void setX(long x) {
         this.x = x;
     }
 
-    public Double getY() {
+    public float getY() {
         return y;
     }
-    public void setY(Double y) {
+    public void setY(float y) {
         this.y = y;
     }
 
@@ -41,16 +43,8 @@ public class Location implements Serializable {
         this.locationName = locationName;
     }
 
-    public long convertStringToCoordinatesX(String str){
-        String[] str_coord;
-        str_coord = str.split(";");
-        return Long.parseLong(str_coord[0]);
-    }
-
-    public Double convertStringToCoordinatesY(String str){
-        String[] str_coord;
-        str_coord = str.split(";");
-        return Double.parseDouble(str_coord[1]);
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @Override

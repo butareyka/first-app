@@ -1,7 +1,10 @@
 package commands;
 
+import models.User;
+
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.Socket;
 
 public abstract class ServerCommand implements Serializable {
     private final String commandName;
@@ -23,7 +26,11 @@ public abstract class ServerCommand implements Serializable {
     }
     
 
-    public Object executionForResponse(Object object) throws IOException {
+    public Object executionForResponse(Object object, User user) throws IOException {
+        return null;
+    }
+
+    public Object executionForResponseQuit(Object object, User user, Socket socket){
         return null;
     }
 
