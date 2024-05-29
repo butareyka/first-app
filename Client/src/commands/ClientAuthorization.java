@@ -30,9 +30,7 @@ public class ClientAuthorization extends ClientCommand implements Serializable {
         String passwordAgain = reader.readLine("Enter password again:\n", '*');
 
         if (Objects.equals(passwordAgain, password)) {
-            User user = new User(userName, password);
-            System.out.println(user);
-            return user;
+            return new User(userName, password);
         } else {
             counter++;
             if (counter < 3) {

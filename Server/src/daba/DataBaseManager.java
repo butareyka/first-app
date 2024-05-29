@@ -449,6 +449,16 @@ public class DataBaseManager {
             properties.load(new FileInputStream(System.getenv("PROP")));
             connectDataBase(url, properties);
 
+            PreparedStatement deleteFromStudyGroup = connection.prepareStatement(
+                    "DELETE FROM StudyGroup WHERE userName = ?"
+            );
+            deleteFromStudyGroup.setString(1, userName);
+
+            PreparedStatement deleteFromPerson = connection.prepareStatement(
+                    "DELETE FROM Person WHERE userName = ?"
+            );
+            deleteFromPerson.setString(1, userName);
+
             PreparedStatement deleteFromCoordinates = connection.prepareStatement(
                     "DELETE FROM Coordinates WHERE userName = ?"
             );
@@ -459,25 +469,15 @@ public class DataBaseManager {
             );
             deleteFromLocation.setString(1, userName);
 
-            PreparedStatement deleteFromPerson = connection.prepareStatement(
-                    "DELETE FROM Person WHERE userName = ?"
-            );
-            deleteFromPerson.setString(1, userName);
-
-            PreparedStatement deleteFromStudyGroup = connection.prepareStatement(
-                    "DELETE FROM StudyGroup WHERE userName = ?"
-            );
-            deleteFromStudyGroup.setString(1, userName);
-
+            deleteFromStudyGroup.executeUpdate();
+            deleteFromPerson.executeUpdate();
             deleteFromCoordinates.executeUpdate();
             deleteFromLocation.executeUpdate();
-            deleteFromPerson.executeUpdate();
-            deleteFromStudyGroup.executeUpdate();
 
+            deleteFromStudyGroup.close();
+            deleteFromPerson.close();
             deleteFromCoordinates.close();
             deleteFromLocation.close();
-            deleteFromPerson.close();
-            deleteFromStudyGroup.close();
 
             System.err.println("Collection tables successfully deleted!\n");
         } catch (SQLException | IOException e) {
